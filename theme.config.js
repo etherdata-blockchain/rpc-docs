@@ -9,8 +9,8 @@ export default {
   titleSuffix: " – ETD",
   search: false,
   unstable_stork: true,
-  repository: "https://github.com/crypyto-panel/etd-website",
-  docsRepository: "https://github.com/crypyto-panel/etd-website",
+  repository: "https://github.com/etherdata/etd-website",
+  docsRepository: "https://github.com/etherdata/etd-website",
   logo: () => {
     const { locale } = useRouter();
     return (
