@@ -1,0 +1,29 @@
+---
+title: 安装
+---
+
+## 要求
+
+1. 【Node.js】最新版本(https://nodejs.org/en/)
+2. 最新版本的[npm](https://www.npmjs.com/)
+3. **可选**，但推荐使用：yarn package manager
+4. [Git](https://git-scm.com/)
+
+## 安装
+
+1. 从 [GitHub]() 克隆存储库
+2. 运行 `npm install` 或 `yarn install`
+3. 创建一个[env](#env)文件
+4. 运行 `npm dev` 或 `yarn dev`
+
+## 环境
+
+此处提供了示例 env 文件。
+
+```env
+port={您要在其上运行服务器的端口}
+password={socket io 的密码。 ETDStats 节点将使用它进行身份验证}
+rpc={RPC 网址}
+mongodbURL={MongoDB 网址}
+
+```
