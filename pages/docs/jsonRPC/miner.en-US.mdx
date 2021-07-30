@@ -1,0 +1,25 @@
+---
+title: miner Namespace
+---
+The `miner` API allows you to remote control the node’s mining operation and set various mining specific settings.
+
+## miner_getHashrate
+Get your hashrate in H/s (Hash operations per second).
+
+## miner_setExtra
+Sets the extra data a miner can include when miner blocks. This is capped at 32 bytes.
+
+## miner_setGasPrice
+Sets the minimal accepted gas price when mining transactions. Any transactions that are below this limit are excluded from the mining process.
+
+## miner_start
+Start the CPU mining process with the given number of threads and generate a new DAG if need be.
+
+## miner_stop
+Stop the CPU mining operation.
+
+## miner_setEtherbase
+Sets the etherbase, where mining rewards will go.
+
+## miner_setGasLimit
+Sets the gas limit the miner will target when mining. Note: on networks where EIP-1559 is activated, this should be set to twice what you want the gas target (i.e. the effective gas used on average per block) to be.
