@@ -1,0 +1,175 @@
+---
+title: admin Namespace
+---
+
+`admin` API 使您可以访问几种非标准的 RPC 方法，
+这将允许您对 Getd 实例进行全面的控制，
+包括但不限于网络 peer 和 RPC 端点的管理。
+
+## admin_addPeer
+
+`addPeer` 管理方法请求添加一个新的远程节点到
+追踪的静态节点列表中去。 节点将尝试保持连接到这些节点，如果
+远程连接断开，它将自动重新连接。
+
+该方法接受一个参数，即`enode`
+远程节点的 URL 开始跟踪并返回
+一个 `BOOL` 值，这个值表示请求是成功还是失败。
+
+### 代码示例
+
+```javascript
+> admin.addPeer("enode://a979fb575495b8d6db44f750317d0f4622bf4c2aa3365d6af7c284339968eef29b69ad0dce72a4d8db5ebb4968de0e3bec910127f134779fbcb0cb6d3331163c@52.16.188.185:30303")
+true
+```
+
+## admin_datadir
+
+可以查询 `datadir` 管理属性
+正在运行的 Getd 节点存储其数据库的绝对路径。
+
+### 代码示例
+
+```javascript
+> admin.datadir
+"/home/john/.ethereum"
+```
+
+## admin_nodeInfo
+
+`nodeInfo` 管理属性可以查询所有
+网络上正在运行的 Getd 节点的已知信息
+。 这些包括有关节点本身的一般信息
+作为 ÐΞVp2p P2P 覆盖协议的参与者，以及每个运行着的程式协议（例如`etd`、`les`、`shh`、`bzz`）。
+
+### 代码示例
+
+```javascript
+> admin.nodeInfo
+{
+  enode: "enode://44826a5d6a55f88a18298bca4773fca5749cdc3a5c9f308aa7d810e9b31123f3e7c5fba0b1d70aac5308426f47df2a128a6747040a3815cc7dd7167d03be320d@[::]:30303",
+  id: "44826a5d6a55f88a18298bca4773fca5749cdc3a5c9f308aa7d810e9b31123f3e7c5fba0b1d70aac5308426f47df2a128a6747040a3815cc7dd7167d03be320d",
+  ip: "::",
+  listenAddr: "[::]:30303",
+  name: "Getd/v1.5.0-unstable/linux/go1.6",
+  ports: {
+    discovery: 30303,
+    listener: 30303
+  },
+  protocols: {
+    eth: {
+      difficulty: 17334254859343145000,
+      genesis: "0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3",
+      head: "0xb83f73fbe6220c111136aefd27b160bf4a34085c65ba89f24246b3162257c36a",
+      network: 1
+    }
+  }
+}
+```
+
+## admin_peers
+
+可以查询所有的“peers”管理属性
+关于连接的远程节点的已知信息
+网络粒度。 这些包括一般信息
+关于节点本身作为 ÐΞVp2p P2P 的参与者
+Overlay 协议，以及以及每个运行着的程式协议（例如`etd`、`les`、`shh`、`bzz`）。
+
+### 代码示例
+
+```javascript
+> admin.peers
+[{
+    caps: ["eth/61", "eth/62", "eth/63"],
+    id: "08a6b39263470c78d3e4f58e3c997cd2e7af623afce64656cfc56480babcea7a9138f3d09d7b9879344c2d2e457679e3655d4b56eaff5fd4fd7f147bdb045124",
+    name: "Getd/v1.5.0-unstable/linux/go1.5.1",
+    network: {
+      localAddress: "192.168.0.104:51068",
+      remoteAddress: "71.62.31.72:30303"
+    },
+    protocols: {
+      eth: {
+        difficulty: 17334052235346465000,
+        head: "5794b768dae6c6ee5366e6ca7662bdff2882576e09609bf778633e470e0e7852",
+        version: 63
+      }
+    }
+}, /* ... */ {
+    caps: ["eth/61", "eth/62", "eth/63"],
+    id: "fcad9f6d3faf89a0908a11ddae9d4be3a1039108263b06c96171eb3b0f3ba85a7095a03bb65198c35a04829032d198759edfca9b63a8b69dc47a205d94fce7cc",
+    name: "Getd/v1.3.5-506c9277/linux/go1.4.2",
+    network: {
+      localAddress: "192.168.0.104:55968",
+      remoteAddress: "121.196.232.205:30303"
+    },
+    protocols: {
+      eth: {
+        difficulty: 17335165914080772000,
+        head: "5794b768dae6c6ee5366e6ca7662bdff2882576e09609bf778633e470e0e7852",
+        version: 63
+      }
+    }
+}]
+```
+
+## admin_startRPC
+
+`startRPC` 管理方法启动一个基于 HTTP 的 JSON RPC
+用于处理客户端请求的 API 网络服务器。 所有参数都是
+Optional 的：
+
+- `host`：用于打开侦听器套接字的网络接口（默认为 `"localhost"`）
+- `port`：打开侦听器套接字的网络端口（默认为 `8545`）
+- `cors`：要使用的跨源资源共享标头（默认为 `""`）
+- `apis`：通过此接口提供的 API 模块（默认为 `"eth,net,web3"`）
+
+该方法返回一个 Bool 表明 HTTP RPC Listener 的打开状态。 请注意，只有一个 HTTP
+端点可以随时处于活动状态。
+
+### 代码示例
+
+```javascript
+> admin.startRPC("127.0.0.1", 8545)
+true
+```
+
+## admin_startWS
+
+`startWS` 管理方法启动一个 WebSocket
+基于 JSON RPC API 网络服务器来处理客户端请求。
+所有参数都是可选的：
+
+- `host`：用于打开侦听器套接字的网络接口（默认为 `"localhost"`）
+- `port`：打开侦听器套接字的网络端口（默认为 `8546`）
+- `cors`：要使用的跨源资源共享标头（默认为 `""`）
+- `apis`：通过此接口提供的 API 模块（默认为 `"eth,net,web3"`）
+
+该方法返回一个 Bool 表明 WebSocket RPC Listener 的打开状态。 请注意，任何时候都只允许一个 WebSocket 端点处于活动状态。
+
+### 代码示例
+
+```javascript
+> admin.startWS("127.0.0.1", 8546)
+true
+```
+
+## admin_stopRPC
+
+`stopRPC` 管理方法关闭当前
+打开 HTTP RPC 端点。 由于节点只能有一个
+HTTP 端点运行，此方法不带参数，返回
+端点是否关闭的布尔值。
+
+### 代码示例
+
+```javascript
+> admin.stopRPC()
+true
+```
+
+## admin_stopWS
+
+`stopWS` 管理方法关闭当前打开的
+WebSocket RPC 端点。 由于节点只能有一个
+正在运行的 WebSocket 端点，此方法不带任何参数，
+无论端点是否关闭，都返回一个布尔值。
