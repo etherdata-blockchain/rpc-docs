@@ -171,9 +171,9 @@ When JS-based tracing (see below) was first implemented, the intended usecase wa
 - It streams output to disk during the execution, to not blow up the memory usage on the node
 - It uses `jsonl` as output format (to allow streaming)
 - Uses a cross-client standardized output, so called ‘standard json'
-  - Uses `op` for string-representation of opcode, instead of `op`/`opName` for numeric/string, and other simlar small differences.
+  - Uses `op` for string-representation of opcode, instead of `op/opName` for numeric/string, and other simlar small differences.
   - has `refund`
-  - Represents memory as a contiguous chunk of data, as opposed to a list of `32`-byte segments like `debug_traceTransaction`
+  - Represents memory as a contiguous chunk of data, as opposed to a list of `32` byte segments like `debug_traceTransaction`
 
 This means that this method is only ‘useful’ for callers who control the node – at least sufficiently to be able to read the artefacts from the filesystem after the fact.
 
@@ -195,7 +195,7 @@ Files are created in a temp-location, with the naming standard `block_<blockhash
 
 On the server side, it also adds some more info when regenerating historical state, namely, the reexec-number if `required historical state is not avaiable` is encountered, so a user can experiment with increasing that setting. It also prints out the remaining block until it reaches target:
 
-```javascript
+```
 INFO [10-15|13:48:25.263] Regenerating historical state            block=2385959 target=2386012 remaining=53   elapsed=3m30.990537767s
 INFO [10-15|13:48:33.342] Regenerating historical state            block=2386012 target=2386012 remaining=0    elapsed=3m39.070073163s
 INFO [10-15|13:48:33.343] Historical state regenerated             block=2386012 elapsed=3m39.070454362s nodes=10.03mB preimages=652.08kB
