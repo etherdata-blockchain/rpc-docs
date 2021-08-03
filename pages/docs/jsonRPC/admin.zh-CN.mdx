@@ -32,7 +32,7 @@ true
 
 ```javascript
 > admin.datadir
-"/home/john/.ethereum"
+"/home/john/.etherdata-blockchain"
 ```
 
 ## admin_nodeInfo
@@ -57,7 +57,7 @@ true
     listener: 30303
   },
   protocols: {
-    eth: {
+    etd: {
       difficulty: 17334254859343145000,
       genesis: "0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3",
       head: "0xb83f73fbe6220c111136aefd27b160bf4a34085c65ba89f24246b3162257c36a",
@@ -88,7 +88,7 @@ Overlay 协议，以及以及每个运行着的程式协议（例如`etd`、`les
       remoteAddress: "71.62.31.72:30303"
     },
     protocols: {
-      eth: {
+      etd: {
         difficulty: 17334052235346465000,
         head: "5794b768dae6c6ee5366e6ca7662bdff2882576e09609bf778633e470e0e7852",
         version: 63
@@ -103,7 +103,7 @@ Overlay 协议，以及以及每个运行着的程式协议（例如`etd`、`les
       remoteAddress: "121.196.232.205:30303"
     },
     protocols: {
-      eth: {
+      etd: {
         difficulty: 17335165914080772000,
         head: "5794b768dae6c6ee5366e6ca7662bdff2882576e09609bf778633e470e0e7852",
         version: 63
@@ -121,7 +121,7 @@ Optional 的：
 - `host`：用于打开侦听器套接字的网络接口（默认为 `"localhost"`）
 - `port`：打开侦听器套接字的网络端口（默认为 `8545`）
 - `cors`：要使用的跨源资源共享标头（默认为 `""`）
-- `apis`：通过此接口提供的 API 模块（默认为 `"eth,net,web3"`）
+- `apis`：通过此接口提供的 API 模块（默认为 `"etd,net,web3"`）
 
 该方法返回一个 Bool 表明 HTTP RPC Listener 的打开状态。 请注意，只有一个 HTTP
 端点可以随时处于活动状态。
@@ -142,7 +142,7 @@ true
 - `host`：用于打开侦听器套接字的网络接口（默认为 `"localhost"`）
 - `port`：打开侦听器套接字的网络端口（默认为 `8546`）
 - `cors`：要使用的跨源资源共享标头（默认为 `""`）
-- `apis`：通过此接口提供的 API 模块（默认为 `"eth,net,web3"`）
+- `apis`：通过此接口提供的 API 模块（默认为 `"etd,net,web3"`）
 
 该方法返回一个 Bool 表明 WebSocket RPC Listener 的打开状态。 请注意，任何时候都只允许一个 WebSocket 端点处于活动状态。
 
