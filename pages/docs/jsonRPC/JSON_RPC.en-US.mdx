@@ -2,11 +2,11 @@
 title: JSON-RPC
 ---
 
-Getd supports all standard web3 JSON-RPC APIs. You can find documentation for these APIs on <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC" title="the Ethereum Wiki JSON-RPC page">the Ethereum Wiki JSON-RPC page</a>.
+Getd supports all standard web3 JSON-RPC APIs. You can find documentation for these APIs on <a href="https://github.com/etherdata-blockchain/wiki/wiki/JSON-RPC" title="the Etherdata-blockchain Wiki JSON-RPC page">the Etherdata-blockchain Wiki JSON-RPC page</a>.
 
 JSON-RPC is provided on multiple transports. Getd supports JSON-RPC over HTTP, WebSocket and Unix Domain Sockets. Transports must be enabled through command-line flags.
 
-Ethereum JSON-RPC APIs use a name-space system. RPC methods are grouped into several categories depending on their purpose. All method names are composed of the namespace, an underscore, and the actual method name within the namespace. For example, the `etd_call` method resides in the `eth` namespace.
+Etherdata-blockchain JSON-RPC APIs use a name-space system. RPC methods are grouped into several categories depending on their purpose. All method names are composed of the namespace, an underscore, and the actual method name within the namespace. For example, the `etd_call` method resides in the `eth` namespace.
 
 Access to RPC methods can be enabled on a per-namespace basis. Find documentation for individual namespaces in the sidebar.
 
@@ -32,10 +32,10 @@ Getd --http --http.api personal,eth,net,web3
 
 Since the HTTP server is reachable from any local application, additional protection is built into the server to prevent misuse of the API from web pages. If you want enable access to the API from a web page, you must configure the server to accept Cross-Origin requests with the `--http.corsdomain` flag.
 
-Example: if you want to use <a href="https://remix.ethereum.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.4+commit.c7e474f2.js" title="Remix">Remix</a> with Getd, allow requests from the remix domain.
+Example: if you want to use <a href="https://remix.etherdata-blockchain.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.4+commit.c7e474f2.js" title="Remix">Remix</a> with Getd, allow requests from the remix domain.
 
 ```javascript
-Getd --http --http.corsdomain https://remix.ethereum.org
+Getd --http --http.corsdomain https://remix.etherdata-blockchain.org
 ```
 
 Use `--http.corsdomain '*'` to enable access from any origin.
@@ -63,7 +63,7 @@ JSON-RPC APIs are also provided on a UNIX domain socket. This server is enabled 
 The listening socket is placed into the data directory by default. On Linux and macOS, the default location of the Getd socket is
 
 ```javascript
-~/.ethereum/Getd.ipc
+~/.etherdata-blockchain/Getd.ipc
 ```
 
 On Windows, IPC is provided via named pipes. The default location of the Getd pipe is:
