@@ -12,7 +12,7 @@ Returns the address of the new account.
 
 ## personal_listAccounts
 
-Returns all the Ethereum account addresses of all keys in the key store.
+Returns all the Etherdata account addresses of all keys in the key store.
 
 ### Example
 
@@ -101,9 +101,9 @@ undefined
 
 ## personal_sign
 
-The sign method calculates an Ethereum specific signature with: `sign(keccack256("\x19Ethereum Signed Message:\n" + len(message) + message)))`.
+The sign method calculates an Etherdata specific signature with: `sign(keccack256("\x19Etherdata Signed Message:\n" + len(message) + message)))`.
 
-By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature. This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to impersonate the victim.
+By adding a prefix to the message makes the calculated signature recognisable as an Etherdata specific signature. This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to impersonate the victim.
 
 See ecRecover to verify the signature.
 
