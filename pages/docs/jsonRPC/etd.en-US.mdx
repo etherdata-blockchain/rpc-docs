@@ -2,11 +2,11 @@
 title: etd Namespace
 ---
 
-Getd provides several extensions to the standard “etd” JSON-RPC namespace.
+Getd provides several extensions to the standard `etd` JSON-RPC namespace.
 
 ## etd_subscribe, etd_unsubscribe
 
-These methods are used for real-time events through subscriptions. See the <a href="https://Getd.etherdata-blockchain.org/docs/rpc/pubsub" title="subscription documentation">subscription documentation</a> for more information.
+These methods are used for real-time events through subscriptions. See the <a href="https://Getd.ethereum.org/docs/rpc/pubsub" title="subscription documentation">subscription documentation</a> for more information.
 
 ## etd_call
 
@@ -26,7 +26,7 @@ The method takes 3 parameters: an unsigned transaction object to execute in read
 | `gas`      | `Quality` | `<8`    | Yes      | Maximum gas allowance for the code execution to avoid infinite loops. Defaults to `2^63` or whatever value the node operator specified via `--rpc.gascap`.                                                                                                                                  |
 | `gasprice` | `Quality` | `<32`   | Yes      | Number of `wei` to simulate paying for each unit of gas during execution. Defaults to `1` `gwei`.                                                                                                                                                                                           |
 | `value`    | `Quality` | `<32`   | Yes      | Amount of `wei` to simulate sending along with the transaction. Defaults to `0`.                                                                                                                                                                                                            |
-| `data`     | `Binary`  | any   | Yes      | Binary data to send to the target contract. Generally the 4 byte hash of the method signature followed by the ABI encoded parameters. For details please see <a href="https://github.com/etherdata-blockchain/wiki/wiki/Etherdata-blockchain-Contract-ABI" title="Etherdata-blockchain Contract ABI">Etherdata-blockchain Contract ABI</a>. |
+| `data`     | `Binary`  | any   | Yes      | Binary data to send to the target contract. Generally the 4 byte hash of the method signature followed by the ABI encoded parameters. For details please see <a href="https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI" title="Ethereum Contract ABI">Ethereum Contract ABI</a>. |
 
 ### Example:
 
@@ -87,7 +87,7 @@ With a synced Rinkeby node with RPC exposed on localhost (`Getd --rinkeby --http
 $ curl --data '{"method":"etd_call","params":[{"to":"0xebe8efa441b9302a0d7eaecc277c09d20d684540","data":"0x45848dfc"},"latest"],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:8545
 ```
 
-And the result is an Etherdata-blockchain ABI encoded list of accounts:
+And the result is an Ethereum ABI encoded list of accounts:
 
 ```javascript
 {
@@ -110,7 +110,7 @@ Just for the sake of completeness, decoded the response is:
 
 The above simple example showed how to call a method already exposed by an on-chain smart contract. What if we want to access some data not exposed by it?
 
-We can gut out the <a href="https://github.com/etherdata-blockchain/go-etherdata-blockchain/blob/master/contracts/checkpointoracle/contract/oracle.sol" title="original">original</a> checkpoint oracle contract with one that retains the same fields (to retain the same storage layout), but one that includes a different method set:
+We can gut out the <a href="https://github.com/ethereum/go-ethereum/blob/master/contracts/checkpointoracle/contract/oracle.sol" title="original">original</a> checkpoint oracle contract with one that retains the same fields (to retain the same storage layout), but one that includes a different method set:
 
 ```javascript
 pragma solidity ^0.5.10;
@@ -137,7 +137,7 @@ With a synced Rinkeby node with RPC exposed on localhost (`Getd --rinkeby --http
 $ curl --data '{"method":"etd_call","params":[{"to":"0xebe8efa441b9302a0d7eaecc277c09d20d684540","data":"0x0be5b6ba"}, "latest", {"0xebe8efa441b9302a0d7eaecc277c09d20d684540": {"code":"0x6080604052348015600f57600080fd5b506004361060285760003560e01c80630be5b6ba14602d575b600080fd5b60336045565b60408051918252519081900360200190f35b6007549056fea265627a7a723058206f26bd0433456354d8d1228d8fe524678a8aeeb0594851395bdbd35efc2a65f164736f6c634300050a0032"}}],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:8545
 ```
 
-And the result is the Etherdata-blockchain ABI encoded threshold number:
+And the result is the Ethereum ABI encoded threshold number:
 
 ```json
 {

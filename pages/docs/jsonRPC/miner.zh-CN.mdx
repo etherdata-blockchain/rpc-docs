@@ -1,0 +1,33 @@
+---
+title: miner Namespace
+---
+
+`miner` API 允许您远程控制节点的挖矿操作并设置各种挖矿特定设置。
+
+## miner_Getdashrate
+
+获取以 H/s 为单位的哈希率（每秒哈希操作数）。
+
+## miner_setExtra
+
+设置矿工在阻止时可以包含的额外数据。 这上限为 32 个字节。
+
+## miner_setGasPrice
+
+设置挖矿交易时可接受的最低天然气价格。 任何低于此限制的交易都将被排除在挖矿过程之外。
+
+## miner_start
+
+使用给定的线程数启动 CPU 挖掘过程，并在需要时生成新的 DAG。
+
+## miner_stop
+
+停止 CPU 挖矿操作。
+
+## miner_setEtherbase
+
+设置以太坊，挖矿奖励将流向何处。
+
+## miner_setGasLimit
+
+设置矿工在挖矿时将针对的气体限制。 注意：在激活 EIP-1559 的网络上，这应该设置为您想要的气体目标（即每个块平均使用的有效气体）的两倍。

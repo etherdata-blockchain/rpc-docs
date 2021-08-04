@@ -1,0 +1,78 @@
+---
+title: JSON-RPC
+---
+
+Getd 支持所有标准的 web3 JSON-RPC API。 您可以在 <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC" title="the Ethereum Wiki JSON-RPC page">以太坊 Wiki JSON-RPC 页面上找到这些 API 的文档 </a>。
+
+JSON-RPC 在多种传输上提供。 Getd 支持基于 HTTP、WebSocket 和 Unix 域套接字的 JSON-RPC。 必须通过命令行标志启用传输。
+
+以太坊 JSON-RPC API 使用命名空间系统。 RPC 方法根据其用途分为几类。 所有方法名称都由名称空间、下划线和名称空间内的实际方法名称组成。 例如，`etd_call` 方法驻留在`eth` 命名空间中。
+
+可以在每个命名空间的基础上启用对 RPC 方法的访问。 在侧栏中查找各个命名空间的文档。
+
+## HTTP 服务器
+
+要启用 HTTP 服务器，请使用 `--http` 标志。
+
+```javascript
+Getd --http
+```
+
+默认情况下，Getd 接受来自环回接口 (127.0.0.1) 的连接。 默认侦听端口是 8545。您可以使用 `--http.port` 和 `--http.addr` 标志自定义地址和端口。
+
+```javascript
+Getd --http --http.port 3334
+```
+
+JSON-RPC 方法命名空间必须列入白名单才能通过 HTTP 服务器使用。 如果调用未列入白名单的命名空间，则会生成错误代码为“-32602”的 RPC 错误。 默认白名单允许访问“eth”和“shh”命名空间。 要启用对帐户管理（“个人”）和调试（“调试”）等其他 API 的访问，它们必须通过 `--http.api 标志` 进行配置。 但是，我们不建议通过 HTTP 启用此类 API，因为访问这些方法会增加攻击面。
+
+```javascript
+Getd --http --http.api personal,etd,net,web3
+```
+
+由于可以从任何本地应用程序访问 HTTP 服务器，因此服务器内置了额外的保护，以防止从网页中滥用 API。 如果您想从网页启用对 API 的访问，您必须将服务器配置为接受带有 `--http.corsdomain` 标志的跨域请求。
+
+代码示例：
+
+如果你想使用 <a href="https://remix.ethereum.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.4+commit.c7e474f2.js" title="Remix">Remix </a> 使用 Getd，允许来自 remix 域的请求。
+
+```javascript
+Getd --http --http.corsdomain https://remix.ethereum.org
+```
+
+使用 `--http.corsdomain '*'` 启用来自任何来源的访问。
+
+## WebSocket 服务器
+
+WebSocket 端点的配置类似于 HTTP 传输。 要启用 WebSocket 访问，请使用 `--ws 标志`。 默认的 WebSocket 端口是 8546。`--ws.addr`、`--ws.port` 和 `--ws.api` 标志可用于自定义 WebSocket 服务器的设置。
+
+```javascript
+Getd --ws --ws.port 3334 --ws.api etd,net,web3
+```
+
+跨域请求保护也适用于 WebSocket 服务器。 使用 `--ws.origins` 标志允许从网页访问服务器：
+
+```javascript
+Getd --ws --ws.origins http://myapp.example.com
+```
+
+与`--http.corsdomain` 一样，使用`--ws.origins '*'` 允许从任何来源访问。
+
+## IPC 服务器
+
+JSON-RPC API 也在 UNIX 域套接字上提供。 默认情况下启用此服务器并可以访问所有 JSON-RPC 命名空间。
+
+默认情况下，侦听套接字放置在数据目录中。 在 Linux 和 macOS 上，Getd 套接字的默认位置是:
+
+```javascript
+~/.ethereum/Getd.ipc
+```
+
+在 Windows 上，IPC 是通过命名管道提供的。 Getd 管道的默认位置是：
+
+```javascript
+\\.\pipe\Getd.ipc
+```
+
+您可以使用 `--ipcpath` 标志配置套接字的位置。 可以使用 `--ipcdisable` 标志禁用 IPC。
+

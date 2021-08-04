@@ -1,0 +1,128 @@
+---
+title: personal Namespace
+---
+
+个人 API 管理密钥库中的私钥。
+
+## personal_importRawKey
+
+将给定的未加密私钥（十六进制字符串）导入密钥库，并使用密码对其进行加密。
+
+返回新帐户的地址。
+
+## personal_listAccounts
+
+返回密钥库中所有密钥的所有以太坊账户地址。
+
+### 代码示例
+
+```javascript
+> personal.listAccounts
+["0x5e97870f263700f46aa00d967821199b9bc5a120", "0x3d80b31a78c30fc628f20b2c89d7ddbf6e53cedc"]
+```
+
+## personal_lockAccount
+
+从内存中删除具有给定地址的私钥。 该帐户不能再用于发送交易。
+
+## personal_newAccount
+
+生成新的私钥并将其存储在密钥存储目录中。 密钥文件使用给定的密码加密。 返回新帐户的地址。
+
+在 Getd 控制台中，当 newAccount 未作为参数提供时，将提示输入密码。
+
+### 代码示例
+
+```javascript
+> personal.newAccount()
+Passphrase:
+Repeat passphrase:
+"0x5e97870f263700f46aa00d967821199b9bc5a120"
+```
+
+密码短语也可以作为字符串提供。
+
+```javascript
+> personal.newAccount("h4ck3r")
+"0x3d80b31a78c30fc628f20b2c89d7ddbf6e53cedc"
+```
+
+## personal_unlockAccount
+
+使用密钥库中的给定地址解密密钥。
+
+使用 JavaScript 控制台时，密码短语和解锁持续时间都是可选的。 如果密码不作为参数提供，控制台将交互提示输入密码。
+
+未加密的密钥将保存在内存中，直到解锁持续时间到期。 如果解锁时长默认为 300 秒。 零秒的明确持续时间将解锁密钥，直到 Getd 退出。
+
+该帐户可以在解锁时与 `etd_sign` 和 `etd_sendTransaction` 一起使用。
+
+### 代码示例
+
+```javascript
+> personal.unlockAccount("0x5e97870f263700f46aa00d967821199b9bc5a120")
+Unlock account 0x5e97870f263700f46aa00d967821199b9bc5a120
+Passphrase:
+true
+```
+
+提供密码短语和解锁持续时间作为参数：
+
+```javascript
+> personal.unlockAccount("0x5e97870f263700f46aa00d967821199b9bc5a120", "foo", 30)
+true
+```
+
+如果您想输入密码短语并仍然覆盖默认解锁持续时间，请将 `null` 作为密码短语传递。
+
+```javascript
+> personal.unlockAccount("0x5e97870f263700f46aa00d967821199b9bc5a120", null, 30)
+Unlock account 0x5e97870f263700f46aa00d967821199b9bc5a120
+Passphrase:
+true
+```
+
+## personal_sendTransaction
+
+验证给定的密码并提交交易。
+
+该交易与 `etd_sendTransaction` 的参数相同，并包含 `from` 地址。 如果密码短语可用于解密登录到“tx.from”的私钥，则交易被验证、签名并发送到网络上。 该账户在节点内未全局解锁，不能用于其他RPC调用。
+
+请注意，在 Getd 1.5 之前，请使用 `personal_signAndSendTransaction`，因为这是最初的介绍性名称，后来才重命名为当前的最终版本。
+
+### 代码示例
+
+```javascript
+> var tx = {from: "0x391694e7e0b0cce554cb130d723a9d27458f9298", to: "0xafa3f8684e54059998bc3a7b0d2b0da075154d66", value: web3.toWei(1.23, "ether")}
+undefined
+> personal.sendTransaction(tx, "passphrase")
+0x8474441674cdd47b35b875fd1a530b800b51a5264b9975fb21129eeb8c18582f
+```
+
+## personal_sign
+
+sign 方法计算以太坊特定的签名：`sign(keccack256("\x19Ethereum Signed Message:\n" + len(message) + message)))`。
+
+通过向消息添加前缀，可以将计算出的签名识别为以太坊特定的签名。 这可以防止恶意 DApp 可以对任意数据（例如交易）进行签名并使用签名来冒充受害者的滥用。
+
+请参阅 ecRecover 以验证签名。
+
+### 代码示例
+
+```javascript
+> personal.sign("0xdeadbeaf", "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83", "")
+"0xa3f20717a250c2b0b729b7e5becbff67fdaef7e0699da4de7ca5895b02a170a12d887fd3b17bfdce3481f10bea41f45ba9f709d39ce8325427b57afcfc994cee1b"
+```
+
+## personal_ecRecover
+
+`ecRecover` 返回与用于计算 `personal_sign` 中签名的私钥相关联的地址。
+
+### 代码示例
+
+```javascript
+> personal.sign("0xdeadbeaf", "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83", "")
+"0xa3f20717a250c2b0b729b7e5becbff67fdaef7e0699da4de7ca5895b02a170a12d887fd3b17bfdce3481f10bea41f45ba9f709d39ce8325427b57afcfc994cee1b"
+> personal.ecRecover("0xdeadbeaf", "0xa3f20717a250c2b0b729b7e5becbff67fdaef7e0699da4de7ca5895b02a170a12d887fd3b17bfdce3481f10bea41f45ba9f709d39ce8325427b57afcfc994cee1b")
+"0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+```

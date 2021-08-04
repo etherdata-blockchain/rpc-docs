@@ -1,0 +1,424 @@
+---
+title: debug Namespace
+---  
+
+`debug` API 使您可以访问多个非标准的 RPC 方法，这将允许您在运行时检查、调试和设置某些调试标志。
+
+## debug_backtraceAt
+设置日志回溯位置。 当设置回溯位置并在该位置发出日志消息时，执行日志语句的 goroutine 的堆栈将被打印到 stderr。
+
+该位置指定为 `<filename>:<line>`。
+
+### 代码示例
+
+```javascript
+> debug.backtraceAt("server.go:443")
+```
+
+## debug_blockProfile
+在给定的持续时间内打开块分析并将分析数据写入磁盘。 它使用 1 的配置文件率来获取最准确的信息。 如果需要不同的速率，请使用 debug_writeBlockProfile 手动设置速率并写入配置文件。
+
+## debug_cpuProfile
+在给定的持续时间内打开 CPU 分析并将分析数据写入磁盘。
+
+## debug_dumpBlock
+检索与区块编号对应的状态并返回帐户列表（包括存储和代码）。
+
+### 代码示例
+```javascript
+> debug.dumpBlock(10)
+{
+    fff7ac99c8e4feb60c9750054bdc14ce1857f181: {
+      balance: "49358640978154672",
+      code: "",
+      codeHash: "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      nonce: 2,
+      root: "56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      storage: {}
+    },
+    fffbca3a38c3c5fcb3adbb8e63c04c3e629aafce: {
+      balance: "3460945928",
+      code: "",
+      codeHash: "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      nonce: 657,
+      root: "56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      storage: {}
+    }
+  },
+  root: "19f4ed94e188dd9c7eb04226bd240fa6b449401a6c656d6d2816a87ccaf206f1"
+}
+```
+## debug_gcStats
+返回 GC 统计信息。
+
+有关返回对象的字段的信息，请参阅 https://golang.org/pkg/runtime/debug/#GCStats。
+
+## debug_getBlockRlp
+按编号检索并返回 RLP 编码块。
+参考资料：RLP
+
+## debug_goTrace
+在给定的持续时间内打开 Go 运行时跟踪并将跟踪数据写入磁盘。
+
+## debug_memStats
+返回详细的运行时内存统计信息。
+
+有关返回对象的字段的信息，请参阅 https://golang.org/pkg/runtime/#MemStats。
+
+## debug_seedHash
+按编号获取和检索块的种子哈希
+
+## debug_setHead
+通过块号设置本地链的当前头。请注意，这是一种破坏性操作，可能会严重损坏您的链条。谨慎使用。
+参考资料：Ethash
+
+## debug_setBlockProfileRate
+设置 goroutine 块配置文件数据收集的速率（以样本/秒为单位）。非零速率启用块分析，将其设置为零停止分析。可以使用 debug_writeBlockProfile 写入收集的配置文件数据。
+
+## debug_stacks
+返回所有 goroutine 堆栈的打印表示。请注意，此方法的 web3 包装器负责打印并且不返回字符串。
+
+## debug_startCPUProfile
+无限期打开 CPU 分析，写入给定文件。
+
+## debug_startGoTrace
+开始将 Go 运行时跟踪写入给定文件。
+
+## debug_stopCPUProfile
+停止正在进行的 CPU 配置文件。
+
+## debug_stopGoTrace
+停止编写 Go 运行时跟踪。
+
+## debug_traceBlock
+`traceBlock` 方法将返回包含在该块中的所有事务的所有调用操作码的完整堆栈跟踪。请注意，此块的父级必须存在，否则将失败。
+参考资料：<a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
+
+### Example
+```javascript
+> debug.traceBlock("0xblock_rlp")
+{
+  gas: 85301,
+  returnValue: "",
+  structLogs: [{
+      depth: 1,
+      error: "",
+      gas: 162106,
+      gasCost: 3,
+      memory: null,
+      op: "PUSH1",
+      pc: 0,
+      stack: [],
+      storage: {}
+  },
+    /* snip */
+  {
+      depth: 1,
+      error: "",
+      gas: 100000,
+      gasCost: 0,
+      memory: ["0000000000000000000000000000000000000000000000000000000000000006", "0000000000000000000000000000000000000000000000000000000000000000", "0000000000000000000000000000000000000000000000000000000000000060"],
+      op: "STOP",
+      pc: 120,
+      stack: ["00000000000000000000000000000000000000000000000000000000d67cbec9"],
+      storage: {
+        0000000000000000000000000000000000000000000000000000000000000004: "8241fa522772837f0d05511f20caa6da1d5a3209000000000000000400000001",
+        0000000000000000000000000000000000000000000000000000000000000006: "0000000000000000000000000000000000000000000000000000000000000001",
+        f652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f: "00000000000000000000000002e816afc1b5c0f39852131959d946eb3b07b5ad"
+      }
+  }]
+  ```
+  
+ ## debug_traceBlockByNumber
+与 <a href="https://getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a> 类似，`traceBlockByNumber` 接受一个区块编号并将重放已存在于数据库中的块。
+参考资料：<a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
+
+## debug_traceBlockByHash
+与 <a href="https://getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a> 类似，`traceBlockByHash` 接受区块哈希并将重放已存在于数据库中的块。
+参考资料：<a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
+
+## debug_traceBlockFromFile
+与 <a href="https://getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a> 类似，`traceBlockFromFile` 接受包含堵塞。
+参考资料：<a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
+
+## debug_standardTraceBlockToFile
+当首次实现基于 JS 的跟踪（见下文）时，预期用例是启用长时间运行的跟踪器，可以通过订阅通道将结果流回。这种方法的工作方式有点不同。 （有关详细信息，请参阅 PR）
+
+* 它在执行过程中将输出流式传输到磁盘，以免炸毁节点上的内存使用量
+* 它使用 `jsonl` 作为输出格式（允许流式传输）
+* 使用跨客户端的标准化输出，即所谓的“标准 json”
+    * 使用 `op` 表示操作码的字符串，而不是使用 `op`/`opName` 表示数字/字符串，以及其他类似的小差异。
+    * 有`退款`
+    * 将内存表示为连续的数据块，而不是像“debug_traceTransaction”这样的“32”字节段列表
+
+这意味着此方法仅对控制节点的调用者“有用”——至少足以在事后从文件系统读取人工制品。
+
+该方法可用于从给定块中转储某个交易：
+
+
+ ```javascript
+> debug.standardTraceBlockToFile("0x0bbe9f1484668a2bf159c63f0cf556ed8c8282f99e3ffdb03ad2175a863bca63", {txHash:"0x4049f61ffbb0747bb88dc1c85dd6686ebf225a3c10c282c45a8e0c644739f7e9", disableMemory:true})
+["/tmp/block_0x0bbe9f14-14-0x4049f61f-099048234"]
+```  
+或者来自一个区块的所有交易：
+
+```javascript
+> debug.standardTraceBlockToFile("0x0bbe9f1484668a2bf159c63f0cf556ed8c8282f99e3ffdb03ad2175a863bca63", {disableMemory:true})
+["/tmp/block_0x0bbe9f14-0-0xb4502ea7-409046657", "/tmp/block_0x0bbe9f14-1-0xe839be8f-954614764", "/tmp/block_0x0bbe9f14-2-0xc6e2052f-542255195", "/tmp/block_0x0bbe9f14-3-0x01b7f3fe-209673214", "/tmp/block_0x0bbe9f14-4-0x0f290422-320999749", "/tmp/block_0x0bbe9f14-5-0x2dc0fb80-844117472", "/tmp/block_0x0bbe9f14-6-0x35542da1-256306111", "/tmp/block_0x0bbe9f14-7-0x3e199a08-086370834", "/tmp/block_0x0bbe9f14-8-0x87778b88-194603593", "/tmp/block_0x0bbe9f14-9-0xbcb081ba-629580052", "/tmp/block_0x0bbe9f14-10-0xc254381a-578605923", "/tmp/block_0x0bbe9f14-11-0xcc434d58-405931366", "/tmp/block_0x0bbe9f14-12-0xce61967d-874423181", "/tmp/block_0x0bbe9f14-13-0x05a20b35-267153288", "/tmp/block_0x0bbe9f14-14-0x4049f61f-606653767", "/tmp/block_0x0bbe9f14-15-0x46d473d2-614457338", "/tmp/block_0x0bbe9f14-16-0x35cf5500-411906321", "/tmp/block_0x0bbe9f14-17-0x79222961-278569788", "/tmp/block_0x0bbe9f14-18-0xad84e7b1-095032683", "/tmp/block_0x0bbe9f14-19-0x4bd48260-019097038", "/tmp/block_0x0bbe9f14-20-0x1517411d-292624085", "/tmp/block_0x0bbe9f14-21-0x6857e350-971385904", "/tmp/block_0x0bbe9f14-22-0xbe3ae2ca-236639695"]
+```
+
+文件在临时位置创建，命名标准为`block_<blockhash:4>-<txindex>-<txhash:4>-<random suffix>`。 每个操作码都会立即流式传输到文件，除了操作系统通常所做的任何缓冲之外，没有 in-getd 缓冲。
+
+在服务器端，它还会在重新生成历史状态时添加更多信息，即遇到“所需的历史状态不可用”时的 reexec-number，因此用户可以尝试增加该设置。 它还打印出剩余的块，直到它达到目标： 
+
+```javascript
+INFO [10-15|13:48:25.263] Regenerating historical state            block=2385959 target=2386012 remaining=53   elapsed=3m30.990537767s
+INFO [10-15|13:48:33.342] Regenerating historical state            block=2386012 target=2386012 remaining=0    elapsed=3m39.070073163s
+INFO [10-15|13:48:33.343] Historical state regenerated             block=2386012 elapsed=3m39.070454362s nodes=10.03mB preimages=652.08kB
+INFO [10-15|13:48:33.352] Wrote trace                              file=/tmp/block_0x14490c57-0-0xfbbd6d91-715824834
+INFO [10-15|13:48:33.352] Wrote trace                              file=/tmp/block_0x14490c57-1-0x71076194-187462969
+INFO [10-15|13:48:34.421] Wrote trace file=/tmp/block_0x14490c57-2-0x3f4263fe-056924484
+```
+
+`options` 如下：
+
+```javascript
+type StdTraceConfig struct {
+  *vm.LogConfig
+  Reexec *uint64
+  TxHash *common.Hash
+}
+```
+
+## debug_standardTraceBadBlockToFile
+此方法类似于“debug_standardTraceBlockToFile”，但可用于获取有关已被拒绝为无效（出于某种原因）的块的信息。
+
+## debug_traceTransaction
+OBS 大多数情况下，debug.standardTraceBlockToFile 更适合跟踪！
+
+traceTransaction 调试方法将尝试以与在网络上执行的完全相同的方式运行事务。在最终尝试执行与给定散列对应的事务之前，它将重放在此事务之前可能已执行的任何事务。
+
+除了交易的哈希值之外，您还可以给它一个次要的可选参数，用于指定此特定调用的选项。可能的选项是：
+
+* `disableStorage`：`BOOL`。将此设置为 true 将禁用存储捕获（默认值 = false）。
+* `disableMemory`：`BOOL`。将此设置为 true 将禁用内存捕获（默认值 = false）。
+* `disableStack`：`BOOL`。将此设置为 true 将禁用堆栈捕获（默认值 = false）。
+* `示踪剂`：`STRING`。设置此项将启用基于 JavaScript 的事务跟踪，如下所述。如果设置，前四个参数将被忽略。
+* `超时`：`STRING`。覆盖基于 JavaScript 的跟踪调用的默认超时 5 秒。 <a href="https://pkg.go.dev/time#ParseDuration" title="here">此处</a> 描述了有效值。
+
+### 代码示例
+```javascript
+> debug.traceTransaction("0x2059dd53ecac9827faad14d364f9e04b1d5fe5b506e3acc886eff7a6f88a696a")
+{
+  gas: 85301,
+  returnValue: "",
+  structLogs: [{
+      depth: 1,
+      error: "",
+      gas: 162106,
+      gasCost: 3,
+      memory: null,
+      op: "PUSH1",
+      pc: 0,
+      stack: [],
+      storage: {}
+  },
+    /* snip */
+  {
+      depth: 1,
+      error: "",
+      gas: 100000,
+      gasCost: 0,
+      memory: ["0000000000000000000000000000000000000000000000000000000000000006", "0000000000000000000000000000000000000000000000000000000000000000", "0000000000000000000000000000000000000000000000000000000000000060"],
+      op: "STOP",
+      pc: 120,
+      stack: ["00000000000000000000000000000000000000000000000000000000d67cbec9"],
+      storage: {
+        0000000000000000000000000000000000000000000000000000000000000004: "8241fa522772837f0d05511f20caa6da1d5a3209000000000000000400000001",
+        0000000000000000000000000000000000000000000000000000000000000006: "0000000000000000000000000000000000000000000000000000000000000001",
+        f652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f: "00000000000000000000000002e816afc1b5c0f39852131959d946eb3b07b5ad"
+      }
+  }]
+```
+
+## 基于 JavaScript 的跟踪
+在第二个参数中指定 `tracer` 选项将启用基于 JavaScript 的跟踪。在这种模式下，`tracer` 被解释为一个 JavaScript 表达式，该表达式预期使用（至少）三个方法评估对象，命名为 `step`、`result` 和 `fault`。
+
+`step` 是一个函数，它接受两个参数 log 和 db，并在 EVM 的每个步骤或发生错误时调用，因为跟踪指定的事务。
+
+`log` 具有以下字段：
+
+* `op`: Object，一个表示当前操作码的 OpCode 对象
+* `stack`: array[big.Int]，EVM 执行栈
+* `memory`：对象，表示合约内存空间的结构
+* `contract`：对象，代表执行当前操作的账户的对象
+
+以及以下方法：
+
+* `getPC()` - 返回一个带有当前程序计数器的数字
+* `getGas()` - 返回一个包含剩余气体量的数字
+* `getCost()` - 以数字形式返回操作码的成本
+* `getDepth()` - 以数字形式返回执行深度
+* `getRefund()` - 以数字形式返回要退还的金额
+* `getError()` - 如果发生错误则返回有关错误的信息，否则返回 undefined
+
+如果 error 非空，则应忽略所有其他字段。
+
+为提高效率，在每个执行步骤中重用相同的 `log` 对象，并使用当前值进行更新；确保复制要在当前调用之外保留的值。例如，这个 step 函数将不起作用：
+
+```javascript
+function(log) {
+  this.logs.append(log);
+}
+```
+
+但是这个步骤函数将：
+
+```javascript
+function(log) {
+  this.logs.append({gas: log.getGas(), pc: log.getPC(), ...});
+}
+```
+
+`log.op` 有以下方法：
+
+* `isPush()` - 如果操作码是 PUSHn，则返回 true
+* `toString()` - 返回操作码的字符串表示
+* `toNumber()` - 返回操作码的编号
+
+`log.memory` 有以下方法：
+
+* `slice(start, stop)` - 将指定的内存段作为字节切片返回
+* `getUint(offset)` - 返回给定偏移量的 32 个字节
+
+`log.stack` 有以下方法：
+
+* `peek(idx)` - 从栈顶返回第 idx 个元素（0 是最顶端的元素）作为 big.Int
+* `length()` - 返回栈中元素的数量
+
+`log.contract` 有以下方法：
+
+* `getCaller()` - 返回调用者的地址
+* `getAddress()` - 返回当前合约的地址
+* `getValue()` - 将调用者发送到合约的值作为 big.Int 返回
+* `getInput()` - 返回传递给合约的输入数据
+
+`db` 有以下方法：
+
+* `getBalance(address)` - 返回一个带有指定账户余额的 `big.Int`
+* `getNonce(address)` - 返回一个带有指定账户随机数的数字
+* `getCode(address)` - 返回一个包含指定账户代码的字节片
+* `getState(address, hash)` - 返回指定账户和指定哈希的状态值
+* `exists(address)` - 如果指定的地址存在则返回真
+
+如果 step 函数在任何时候抛出异常或执行非法操作，则不会在任何进一步的 VM 步骤上调用它，并将错误返回给调用者。
+
+第二个函数 `result` 接受两个参数 `ctx` 和 `db`，预计会返回一个 JSON 可序列化的值以返回给 RPC 调用者。
+
+`ctx` 是事务执行的上下文，具有以下字段：
+
+* `type` - 字符串，CALL 和 CREATE 两个值之一
+* `from` - 地址，交易的发送者
+* `to` - 地址，交易目标
+* `input` - 缓冲区，输入交易数据
+* `gas` - 数量，交易的gas预算
+* `value` - big.Int，要转入wei的金额
+* `block` - 编号，块编号
+* `output` - 缓冲区，从 EVM 返回的值
+* `gasUsed` - 执行交易时使用的气体数量（不包括 txdata 成本）
+* `time` - 字符串，执行运行时
+
+第三个函数 `fault` 接受两个参数 `log` 和 `db`，就像 `step` 一样，当在执行 `step` 未报告的操作码期间发生错误时调用。 `log.getError()` 方法包含有关错误的信息。
+
+请注意，有几个值是 Golang big.Int 对象，而不是 JavaScript 数字或 JS bigint。因此，它们具有与 godocs 中描述的相同的接口。它们默认的 JSON 序列化是作为 Javascript 编号；序列化大数字准确地调用`.String()`。为方便起见，提供了 `big.NewInt(x)`，并将一个 uint 转换为 Go BigInt。
+
+用法示例，仅在每个 CALL 操作码处返回堆栈的顶部元素：
+
+```javascript
+debug.traceTransaction(txhash, {tracer: '{data: [], fault: function(log) {}, step: function(log) { if(log.op.toString() == "CALL") this.data.push(log.stack.peek(0)); }, result: function() { return this.data; }}'});
+```
+
+1031 / 5000
+翻译结果
+## debug_traceCall
+`debug_traceCall` 方法允许您在给定块的顶部运行 `etd_call`。块可以通过哈希或数字指定。它采用与“etd_call”相同的输入对象。它返回与 debug_traceTransaction 相同的输出。可以将跟踪器指定为第三个参数，类似于 debug_traceTransaction。
+
+`Object` - 事务调用对象
+
+* `from`: `DATA`, 20 Bytes -（可选）发送交易的地址。
+* `to`: `DATA`, 20 Bytes - 交易指向的地址。
+* `gas`: `QUANTITY` -（可选）为交易执行提供的气体整数。 etd_call 消耗零气体，但某些执行可能需要此参数。
+* `gasPrice`：`QUANTITY` -（可选）用于每个付费gas的gasPrice整数
+* `value`：`QUANTITY` -（可选）与此交易一起发送的值的整数
+* `data`: `DATA` -（可选）方法签名和编码参数的哈希值。有关详细信息，请参阅 Solidity 文档中的ETD合约 ABI 
+
+### 代码示例
+No specific call options:
+
+```javascript
+> debug.traceCall(null, "0x0")
+{
+  failed: false,
+  gas: 53000,
+  returnValue: "",
+  structLogs: []
+}
+```
+
+跟踪具有目的地和特定发件人的调用，禁用存储和内存输出（通过 RPC 返回的数据较少）
+
+```javascript
+debug.traceCall({
+	from: "0xdeadbeef292929291929394949595949339292929, 
+	to:"0xde929f939d939d393f939393f93939f393929023", 
+	gas: "0x7a120", 
+	data: "0xf00d4b5d00000000000000000000000001291230982139282304923482304912923823920000000000000000000000001293123098123928310239129839291010293810"
+	}, 
+	"latest", {disableStorage:true, disableMemory: true})  
+```
+
+卷曲示例
+
+```javascript
+> curl -H "Content-Type: application/json" -X POST  localhost:8545 --data '{"jsonrpc":"2.0","method":"debug_traceCall","params":[null, "pending"],"id":1}'
+{"jsonrpc":"2.0","id":1,"result":{"gas":53000,"failed":false,"returnValue":"","structLogs":[]}}
+```
+
+## debug_verbosity
+设置日志记录详细程度上限。 将打印级别达到并包括给定级别的日志消息。
+
+可以使用 debug_vmodule 提高单个包和源文件的详细程度。
+
+## debug_vmodule
+设置日志记录详细模式。
+
+＃＃＃ 代码示例
+如果要查看来自特定 Go 包（目录）和所有子目录的消息，请使用：
+
+```javascript
+> debug.vmodule("etd/*=6")
+```
+
+如果要将消息限制为特定包（例如 p2p）但排除子目录，请使用： 
+
+```javascript
+> debug.vmodule("p2p=6")
+```
+
+如果要查看来自特定源文件的日志消息，请使用：
+
+```javascript
+> debug.vmodule("server.go=6")
+```
+
+您可以组合这些基本模式。 如果您想在 etd 下的包（etd/peer.go、etd/downloader/peer.go）中查看 peer.go 的所有输出以及级别 < = 5 的包 p2p 的输出，请使用：
+
+```javascript
+debug.vmodule("etd/*/peer.go=6,p2p=5")
+```
+
+## debug_writeBlockProfile
+将 goroutine 阻塞配置文件写入给定文件。
+
+## debug_writeMemProfile
+将分配配置文件写入给定文件。 请注意，分析率不能通过 API 设置，必须使用 `--pprof.memprofilerate` 标志在命令行上设置。

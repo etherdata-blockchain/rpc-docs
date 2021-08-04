@@ -1,0 +1,78 @@
+---
+title: clique Namespace
+---
+`clique` API 提供对 clique 共识引擎状态的访问。 您可以使用此 API 来管理签名者投票并检查专用网络的运行状况。
+
+## clique.getSnapshot
+检索给定块中所有集团状态的快照。
+
+### 代码示例
+
+```javascript
+> clique.getSnapshot(5463755)
+{
+  hash: "0x018194fc50ca62d973e2f85cffef1e6811278ffd2040a4460537f8dbec3d5efc",
+  number: 5463755,
+  recents: {
+    5463752: "0x42eb768f2244c8811c63729a21a3569731535f06",
+    5463753: "0x6635f83421bf059cd8111f180f0727128685bae4",
+    5463754: "0x7ffc57839b00206d1ad20c69a1981b489f772031",
+    5463755: "0xb279182d99e65703f0076e4812653aab85fca0f0"
+  },
+  signers: {
+    0x42eb768f2244c8811c63729a21a3569731535f06: {},
+    0x6635f83421bf059cd8111f180f0727128685bae4: {},
+    0x7ffc57839b00206d1ad20c69a1981b489f772031: {},
+    0xb279182d99e65703f0076e4812653aab85fca0f0: {},
+    0xd6ae8250b8348c94847280928c79fb3b63ca453e: {},
+    0xda35dee8eddeaa556e4c26268463e26fb91ff74f: {},
+    0xfc18cbc391de84dbd87db83b20935d3e89f5dd91: {}
+  },
+  tally: {},
+  votes: []
+}
+```
+
+## clique_getSnapshotAtHash
+检索给定块的状态快照。
+
+## clique_getSnapshotAtHash
+检索给定块的状态快照。
+
+## clique_getSigners
+检索指定区块的授权签名者列表。
+
+## clique_proposals
+返回节点正在投票的当前提案。
+
+## clique_propose
+添加一个新的授权提议，签名者将尝试通过该提议。如果“auth”参数为真，则本地签名者投票将给定地址包含在授权签名者集中。将 `auth` 设置为 `false`，投票反对该地址。
+
+## clique_discard
+此方法删除当前正在运行的提案。签名者不会对该地址进一步投票（支持或反对）。
+
+## clique_status
+这是一种调试方法，它返回有关最近 64 个块的签名者活动的统计信息。返回的对象包含以下字段：
+
+* `inturnPercent`：轮流签名的区块百分比
+* `sealerActivity`：包含签名者地址和由他们签名的区块数量的对象
+* `numBlocks`：分析的块数
+
+### 代码示例
+
+```javascript
+> clique.status()
+{
+  inturnPercent: 100,
+  numBlocks: 64,
+  sealerActivity: {
+    0x42eb768f2244c8811c63729a21a3569731535f06: 9,
+    0x6635f83421bf059cd8111f180f0727128685bae4: 9,
+    0x7ffc57839b00206d1ad20c69a1981b489f772031: 9,
+    0xb279182d99e65703f0076e4812653aab85fca0f0: 10,
+    0xd6ae8250b8348c94847280928c79fb3b63ca453e: 9,
+    0xda35dee8eddeaa556e4c26268463e26fb91ff74f: 9,
+    0xfc18cbc391de84dbd87db83b20935d3e89f5dd91: 9
+  }
+}
+```

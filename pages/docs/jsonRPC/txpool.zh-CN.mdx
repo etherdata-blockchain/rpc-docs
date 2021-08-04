@@ -2,16 +2,16 @@
 title: txpool Namespace
 ---
 
-The `txpool` API gives you access to several non-standard RPC methods to inspect the contents of the transaction pool containing all the currently pending transactions as well as the ones queued for future processing.
+`txpool` API 使您可以访问几种非标准的 RPC 方法，以检查包含所有当前挂起的交易以及排队等待未来处理的交易池的内容。
 
 ## txpool_content
-The `content` inspection property can be queried to list the exact details of all the transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only.
+可以查询“内容”检查属性以列出当前等待包含在下一个块中的所有交易的确切详细信息，以及计划仅用于未来执行的交易。
 
-The result is an object with two fields `pending` and `queued`. Each of these fields are associative arrays, in which each entry maps an origin-address to a batch of scheduled transactions. These batches themselves are maps associating nonces with actual transactions.
+结果是一个具有“pending”和“queued”两个字段的对象。 这些字段中的每一个都是关联数组，其中每个条目将一个源地址映射到一批预定的事务。 这些批次本身是将随机数与实际交易相关联的映射。
 
-Please note, there may be multiple transactions associated with the same account and nonce. This can happen if the user broadcast mutliple ones with varying gas allowances (or even complerely different transactions).
+请注意，可能有多个交易与同一个帐户和随机数相关联。 如果用户广播多个具有不同 gas 限额（甚至完全不同的交易）的消息，就会发生这种情况。
 
-### Example
+### 代码示例
 
 ```javascript
 > txpool.content
@@ -97,13 +97,13 @@ Please note, there may be multiple transactions associated with the same account
 ```
 
 ## txpool_inspect
-The `inspect` inspection property can be queried to list a textual summary of all the transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only. This is a method specifically tailored to developers to quickly see the transactions in the pool and find any potential issues.
+可以查询`inspect`检查属性以列出当前等待包含在下一个块中的所有交易的文本摘要，以及仅被安排为将来执行的交易。 这是一种专门为开发人员量身定制的方法，可以快速查看池中的交易并发现任何潜在问题。
 
-The result is an object with two fields `pending` and `queued`. Each of these fields are associative arrays, in which each entry maps an origin-address to a batch of scheduled transactions. These batches themselves are maps associating nonces with transactions summary strings.
+结果是一个具有“pending”和“queued”两个字段的对象。 这些字段中的每一个都是关联数组，其中每个条目将一个源地址映射到一批预定的事务。 这些批次本身是将随机数与交易摘要字符串相关联的映射。
 
-Please note, there may be multiple transactions associated with the same account and nonce. This can happen if the user broadcast mutliple ones with varying gas allowances (or even complerely different transactions).
+请注意，可能有多个交易与同一个帐户和随机数相关联。 如果用户广播多个具有不同 gas 限额（甚至完全不同的交易）的消息，就会发生这种情况。
 
-### Example
+### 代码示例
 
 ```javascript
 > txpool.inspect
@@ -159,11 +159,11 @@ Please note, there may be multiple transactions associated with the same account
 ```
 
 ### txpool_status
-The `status` inspection property can be queried for the number of transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only.
+“状态”检查属性可以查询当前等待包含在下一个块中的交易数量，以及计划仅用于未来执行的交易数量。
 
-The result is an object with two fields `pending` and `queued`, each of which is a counter representing the number of transactions in that particular state.
+结果是一个具有两个字段“待定”和“排队”的对象，每个字段都是一个计数器，表示该特定状态下的事务数。
 
-### Example
+### 代码示例
 
 ```javascript
 > txpool.status

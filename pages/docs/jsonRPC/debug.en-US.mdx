@@ -111,7 +111,7 @@ Stops writing the Go runtime trace.
 ## debug_traceBlock
 
 The `traceBlock` method will return a full stack trace of all invoked opcodes of all transaction that were included in this block. Note, the parent of this block must be present or it will fail.  
-References: <a href="https://github.com/etherdata/wiki/wiki/RLP" title="RLP">RLP</a>
+References: <a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
 
 ### Example
 
@@ -151,18 +151,18 @@ References: <a href="https://github.com/etherdata/wiki/wiki/RLP" title="RLP">RLP
 
 ## debug_traceBlockByNumber
 
-Similar to <a href="https://Getd.etherdata.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockByNumber` accepts a block number and will replay the block that is already present in the database.  
-References: <a href="https://github.com/etherdata/wiki/wiki/RLP" title="RLP">RLP</a>
+Similar to <a href="https://Getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockByNumber` accepts a block number and will replay the block that is already present in the database.  
+References: <a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
 
 ## debug_traceBlockByHash
 
-Similar to <a href="https://Getd.etherdata.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockByHash` accepts a block hash and will replay the block that is already present in the database.  
-References: <a href="https://github.com/etherdata/wiki/wiki/RLP" title="RLP">RLP</a>
+Similar to <a href="https://Getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockByHash` accepts a block hash and will replay the block that is already present in the database.  
+References: <a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
 
 ## debug_traceBlockFromFile
 
-Similar to <a href="https://Getd.etherdata.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockFromFile` accepts a file containing the RLP of the block.  
-References: <a href="https://github.com/etherdata/wiki/wiki/RLP" title="RLP">RLP</a>
+Similar to <a href="https://Getd.ethereum.org/docs/rpc/ns-debug#debug_traceblock" title="debug_traceBlock">debug_traceBlock</a>,`traceBlockFromFile` accepts a file containing the RLP of the block.  
+References: <a href="https://github.com/ethereum/wiki/wiki/RLP" title="RLP">RLP</a>
 
 ## debug_standardTraceBlockToFile
 
@@ -376,7 +376,7 @@ The `debug_traceCall` method lets you run an `etd_call` on top of a given block.
 - `gas`: `QUANTITY` - (optional) Integer of the gas provided for the transaction execution. etd_call consumes zero gas, but this parameter may be needed by some executions.
 - `gasPrice`: `QUANTITY` - (optional) Integer of the gasPrice used for each paid gas
 - `value`: `QUANTITY` - (optional) Integer of the value sent with this transaction
-- `data`: `DATA` - (optional) Hash of the method signature and encoded parameters. For details see Etherdata Contract ABI in the Solidity documentation
+- `data`: `DATA` - (optional) Hash of the method signature and encoded parameters. For details see Ethereum Contract ABI in the Solidity documentation
 
 ### Example
 
@@ -441,7 +441,7 @@ If you want to see log messages from a particular source file, use
 > debug.vmodule("server.go=6")
 ```
 
-You can compose these basic patterns. If you want to see all output from peer.go in a package below eth (eth/peer.go, eth/downloader/peer.go) as well as output from package p2p at level < = 5, use:
+You can compose these basic patterns. If you want to see all output from peer.go in a package below etd (etd/peer.go, etd/downloader/peer.go) as well as output from package p2p at level < = 5, use:
 
 ```javascript
 debug.vmodule("etd/*/peer.go=6,p2p=5")
