@@ -1,0 +1,38 @@
+---
+title: rk FAQ
+---
+
+# FAQ
+
+## Pm2 not working
+
+> pm2 error
+
+**Check if pip3 installed required packages**
+
+```bash
+$ pip3 install -r auto-update-requirements.txt
+$ pm2 restart app.json
+```
+
+## Git permission denied
+
+**Redownload 'etherdata-blockchain'**
+
+```bash
+$ sudo rm -rf etherdata-blockchain
+$ sudo chmod 777 /mnt
+$ git clone https://....
+```
+
+## Git login
+
+**Run the following line before further git commands, 
+this will store the next login information.**
+
+```bash
+$ git config --global credential.helper store
+```
+
+
+
